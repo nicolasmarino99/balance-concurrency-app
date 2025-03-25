@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { Sequelize } = require('sequelize');
 const { Umzug } = require('umzug'); 

@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "nicolasmarino",
-    "database": "balance_db",
-    "host": "127.0.0.1",
+    "username": "$DB_USER",
+    "database": "$DB_NAME",
+    "host": "$DB_HOST",
     "dialect": "postgres"
   }
 }
