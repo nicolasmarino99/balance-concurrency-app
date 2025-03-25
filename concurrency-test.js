@@ -12,14 +12,15 @@ async function resetBalance() {
       userId: USER_ID,
       balance: 10000 
     });
-    console.log('Balance reset to 10,000');
+    console.log('✅ Баланс успешно сброшен до 10000');
   } catch (error) {
-    console.error('Failed to reset balance:', error.message);
+    console.error('❌ Ошибка сброса баланса:', error.message);
     process.exit(1);
   }
 }
 
 async function runConcurrencyTest() {
+  console.log('🔄 Подготовка к тесту...');
   await resetBalance();
 
   const requests = Array(REQUESTS).fill().map(() => 
@@ -34,7 +35,7 @@ async function runConcurrencyTest() {
     }))
   );
 
-  console.log(`Sending ${REQUESTS} concurrent requests...`);
+  console.log(`🚀 Запуск ${REQUESTS} конкурентных запросов...`);
   const startTime = performance.now();
 
   const results = await Promise.allSettled(requests);
@@ -43,15 +44,18 @@ async function runConcurrencyTest() {
   const successful = results.filter(r => r.value?.success).length;
   const failed = results.filter(r => !r.value?.success).length;
 
-  console.log(`Test completed in ${duration.toFixed(2)} seconds`);
-  console.log(`Successful requests: ${successful}`);
-  console.log(`Failed requests: ${failed}`);
-  
+  console.log('\n📊 Результаты теста:');
+  console.log(`⏱ Время выполнения: ${duration.toFixed(2)} сек`);
+  console.log(`✅ Успешных запросов: ${successful}`);
+  console.log(`❌ Неудачных запросов: ${failed}`);
+
+  console.log('\n🔍 Проверка итогового баланса...');
   try {
-    const finalBalance = await axios.get(`${BASE_URL}/balance/${USER_ID}`);
-    console.log(`Final balance should be 0:`, finalBalance.data.balance);
+    const response = await axios.get(`${BASE_URL}/balance/${USER_ID}`);
+    console.log(`💰 Итоговый баланс: ${response.data.balance}`);
+    console.log(`📌 Ожидаемый баланс: 0`)
   } catch (error) {
-    console.error('Failed to verify final balance:', error.message);
+    console.error('Ошибка при проверке баланса:', error.message);
   }
 }
 
