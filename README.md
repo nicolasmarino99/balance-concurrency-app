@@ -87,6 +87,10 @@ curl -X POST http://localhost:3001/balance/reset \
 Для проверки работы с конкурентными запросами выполните:
 
 ```bash
+npm run migrate
+```
+
+```bash
 npm run test:concurrency
 ```
 Это отправит 10,000 запросов на списание по 2 единицы. Ожидается:
