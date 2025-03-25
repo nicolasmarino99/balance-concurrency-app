@@ -44,7 +44,6 @@ const db = require('./models');
     await sequelize.authenticate();
     console.log('Database connected.');
     
-    // Create SequelizeMeta table if it doesn't exist
     await sequelize.getQueryInterface().createTable('SequelizeMeta', {
       name: {
         type: Sequelize.STRING,

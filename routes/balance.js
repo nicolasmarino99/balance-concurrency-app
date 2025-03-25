@@ -50,4 +50,52 @@ router.post('/update', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await db.User.findByPk(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ 
+      userId: user.id,
+      balance: user.balance 
+    });
+  } catch (error) {
+    console.error('Error fetching balance:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/reset', async (req, res) => {
+  const { userId, balance } = req.body;
+  console.log(userId, balance)
+
+  // Validate input
+  if (!userId || balance === undefined) {
+    return res.status(400).json({ error: 'userId and balance are required' });
+  }
+  const numericBalance = parseInt(balance);
+  if (isNaN(numericBalance)) {
+    return res.status(400).json({ error: 'balance must be a number' });
+  }
+
+  try {
+    const user = await db.User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    await user.update({ balance: numericBalance });
+    return res.json({ 
+      message: 'Balance reset successfully',
+      userId,
+      newBalance: numericBalance
+    });
+  } catch (error) {
+    console.error('Reset balance error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 module.exports = router;
