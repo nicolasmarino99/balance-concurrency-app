@@ -1,7 +1,6 @@
 {
   "development": {
-    "username": "your_username",
-    "password": "your_password",
+    "username": "nicolasmarino",
     "database": "balance_db",
     "host": "127.0.0.1",
     "dialect": "postgres"
